@@ -12,14 +12,26 @@ header{
         }
         svg{
             fill: #fff;
-            &:hover{
-                animation: pulse 0.5s infinite;
-                fill: #eea653;
-                stroke:"#eea653";
-            }
         }
     }
 
+}
+
+
+@media screen and (min-width:1000px) {
+    header{
+        nav{
+            svg{
+                &:hover{
+                    animation: pulse 0.5s infinite;
+                    fill: #eea653;
+                    stroke:"#eea653";
+                }
+            }
+        }
+    
+    }
+    
 }
 
 @keyframes pulse {

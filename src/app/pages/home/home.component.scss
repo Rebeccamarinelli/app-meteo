@@ -15,6 +15,7 @@ p{
     padding-bottom: 1.1em;
 }
 
+
 .wrapper{
     width: 100%;
     display: flex;
@@ -40,7 +41,7 @@ p{
                 border: 1px solid #c2c2c2;
                 outline: none;
                 transition: all 0.1s ease-in-out;
-                caret-color: #f5320b; /* Colore della barra del cursore */
+                caret-color: #f5320b; 
                 &:focus{
                     transform: scale(0.98);
                     border: 1.5px solid #eea653;
@@ -63,10 +64,7 @@ p{
             border-radius: 40px;
             cursor: pointer;
             transition: all 0.2s ease;
-            &:hover{
-                background-color: #bcbcbc;
-                color: #111;
-            }
+            margin-bottom: 3em;
         }
     }
     
@@ -89,7 +87,6 @@ p{
     justify-content: space-between;
     align-items: center;
     .c-card-meteo{
-        //width: 25%;
         width: 85%;
         padding: 1em;
         background: rgba(255, 255, 255, 0.16);
@@ -150,8 +147,7 @@ p{
 @media screen and (min-width:500px) {
     .wrapper-chart{
         .c-card-meteo{
-            //width: 25%;
-            width: 50%;
+            width: 70%;
         }
        
     }
@@ -181,11 +177,9 @@ p{
 
     .wrapper-chart{
         width: 98%;
-        //padding: 0 5%;
         padding: 0 1%;
         display: flex;
-        //flex-direction: row;
-         flex-direction: column;
+        flex-direction: column;
         justify-content: space-between;
         align-items: center;
         .c-chart{
@@ -194,6 +188,41 @@ p{
         }
     }
 
+    .wrapper-chart{
+        .c-card-meteo{
+            width: 50%;
+        }
+       
+    }
+
+}
+
+
+@media screen and (min-width:1000px) {
+    .wrapper{
+        .c-input{
+            button{
+                &:hover{
+                    background-color: #bcbcbc;
+                    color: #111;
+                }
+                
+            }
+        }
+        
+    }
+
+    .wrapper-chart{
+        .c-card-meteo{
+            button{
+                &:hover{
+                    background-color: #bcbcbc;
+                    color: #111;
+                }
+            }
+        }
+    }
+    
 }
 
 
@@ -204,7 +233,6 @@ p{
         padding: 0 5%;
         display: flex;
         flex-direction: row;
-        //flex-direction: column;
         justify-content: space-between;
         align-items: center;
         .c-card-meteo{
@@ -219,12 +247,3 @@ p{
 }
 
 
-@media screen and (orientation:landscape) {
-    h2{
-        padding-top: 1em;
-        display: flex;
-        justify-content: center;
-        padding-bottom: 3em;
-    }
-    
- }

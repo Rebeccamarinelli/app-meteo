@@ -164,7 +164,7 @@ export class HomeComponent {
   h2Text = 'Weather App';
 
   onInputFocus() {
-    this.h2Text = "Let's Typing";
+    this.h2Text = "Search for your favourite city";
   }
 
   onInputBlur() {
