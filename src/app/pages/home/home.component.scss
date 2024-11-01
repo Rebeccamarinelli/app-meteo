@@ -217,3 +217,14 @@ p{
        
     }
 }
+
+
+@media screen and (orientation:landscape) {
+    h2{
+        padding-top: 1em;
+        display: flex;
+        justify-content: center;
+        padding-bottom: 3em;
+    }
+    
+ }
