@@ -1,7 +1,7 @@
 <div class="w-fav">
     <h2>Città Preferite</h2>
     <div class="c-fav">
-      <div *ngFor="let city of favoriteCities">
+      <div *ngFor="let city of favoriteCities" @fadeIn>
         <img [src]="getWeatherIcon(city.weatherCode)" alt="Icona Meteo">
        <h2> {{ capitalizeFirstLetter(city.name) }}</h2>
        <p>Temperatura: {{city.temperature}} °C</p>
