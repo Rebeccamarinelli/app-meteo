@@ -1,0 +1,40 @@
+header{
+    width: 100%;
+    background-color: transparent;
+    padding:2em;
+    box-sizing: border-box;
+    nav{
+        display: flex;
+        justify-content: flex-end;
+        a{
+            color: #fff;
+            text-decoration: none;
+        }
+        svg{
+            fill: #fff;
+            &:hover{
+                animation: pulse 0.5s infinite;
+                fill: #eea653;
+                stroke:"#eea653";
+            }
+        }
+    }
+
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.90);
+        
+    }
+
+    70% {
+        transform: scale(1);
+       
+    }
+
+    100% {
+        transform: scale(0.90);
+        
+    }
+}

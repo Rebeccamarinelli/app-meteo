@@ -1,0 +1,1 @@
+header{width:100%;background-color:rgba(0,0,0,0);padding:2em;box-sizing:border-box}header nav{display:flex;justify-content:flex-end}header nav a{color:#fff;text-decoration:none}header nav svg{fill:#fff}header nav svg:hover{animation:pulse .5s infinite;fill:#eea653;stroke:"#eea653"}@keyframes pulse{0%{transform:scale(0.9)}70%{transform:scale(1)}100%{transform:scale(0.9)}}

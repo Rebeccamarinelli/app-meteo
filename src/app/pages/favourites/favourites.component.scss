@@ -1,0 +1,74 @@
+.w-fav{
+    h2{
+        text-align: center;
+        margin-bottom: 2em;
+    }
+    width: 100%;
+    padding: 0 10%;
+    box-sizing: border-box;
+    .c-fav{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        div{
+            width: 98%;
+            background: rgba(255, 255, 255, 0.16);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8.8px);
+            -webkit-backdrop-filter: blur(8.8px);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            margin: 0 0.5em;
+            margin-bottom: 2em;
+            padding: 1em;
+            text-align: center;
+            button{
+                margin-top: 1em;
+                border: none;
+                width: 200px;
+                background-color: #111;
+                color: #fff;
+                padding: 1.2em;
+                border-radius: 40px;
+                cursor: pointer;
+            }
+            p{
+                margin-bottom: 0.5em;
+            }
+        }
+    }
+}
+
+.empty{
+    text-align: center;
+}
+
+@media screen and (min-width:600px) {
+    .w-fav{
+        .c-fav{
+            div{
+               width: 50%;
+            }
+        }
+    }
+}
+
+
+@media screen and (min-width:1000px) {
+    .w-fav{
+        .c-fav{
+            flex-direction: row;
+            flex-wrap: wrap;
+            div{
+               width: 25%;
+               button{
+                &:hover{
+                    background-color: #bcbcbc;
+                    color: #111;
+                }
+               }
+            }
+        }
+    }
+}

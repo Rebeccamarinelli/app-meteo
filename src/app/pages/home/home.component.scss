@@ -1,0 +1,219 @@
+h2{
+    padding-top: 2em;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 3em;
+}
+
+h3{
+    display: flex;
+    justify-content: center;
+    padding: 1.3em 0;
+}
+
+p{
+    padding-bottom: 1.1em;
+}
+
+.wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .c-input{
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .input-wrapper{
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            input{
+                background-color: #c7c6c6;
+                width: 100%;
+                padding: 1em;
+                border-radius: 40px;
+                border: 1px solid #c2c2c2;
+                outline: none;
+                transition: all 0.1s ease-in-out;
+                caret-color: #f5320b; /* Colore della barra del cursore */
+                &:focus{
+                    transform: scale(0.98);
+                    border: 1.5px solid #eea653;
+                }
+            }
+            svg{
+                position: absolute;
+                top: 10%;
+                right: 25%;
+                display: none;
+            }
+        }
+        button{
+            margin-top: 1em;
+            border: none;
+            width: 200px;
+            background-color: #464444;
+            color: #fff;
+            padding: 1.2em;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            &:hover{
+                background-color: #bcbcbc;
+                color: #111;
+            }
+        }
+    }
+    
+}
+
+
+
+
+.input-wrapper:focus-within svg {
+    transform: scale(0.8);
+    transition: transform 0.2s ease-out;
+    fill: #f5320b;
+  }
+
+.wrapper-chart{
+    width: 98%;
+    padding: 0 1%;
+    display: flex;
+     flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    .c-card-meteo{
+        //width: 25%;
+        width: 85%;
+        padding: 1em;
+        background: rgba(255, 255, 255, 0.16);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(8.8px);
+        -webkit-backdrop-filter: blur(8.8px);
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1em;
+        img{
+            width: 100px;
+        }
+        button{
+            margin-top: 1em;
+            border: none;
+            width: 200px;
+            background-color: #111;
+            color: #fff;
+            padding: 1.2em;
+            border-radius: 40px;
+            cursor: pointer;
+            &:hover{
+                background-color: #bcbcbc;
+                color: #111;
+            }
+        }
+    }
+    .c-chart{
+        width: 70%;
+        background: rgba(255, 255, 255, 0.16);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(8.8px);
+        -webkit-backdrop-filter: blur(8.8px);
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        display: none;
+    }
+}
+
+#tempChart{
+    width: 1000px;
+    height: auto;
+}
+
+.pop-up{
+    width: 200px;
+    margin-top: 1em;
+    padding: 0.5em;
+    border-radius: 20px;
+    background-color: rgba(218, 109, 109, 0.616);
+}
+
+
+@media screen and (min-width:500px) {
+    .wrapper-chart{
+        .c-card-meteo{
+            //width: 25%;
+            width: 50%;
+        }
+       
+    }
+}
+
+
+
+@media screen and (min-width:800px) {
+    .wrapper{
+        .c-input{
+            .input-wrapper{
+                input{
+                    width: 50%;
+                    padding: 2em;
+                }
+                svg{
+                    position: absolute;
+                    top: 10%;
+                    right: 25%;
+                    display: block;
+                }
+            }
+        }
+        
+    }
+
+
+    .wrapper-chart{
+        width: 98%;
+        //padding: 0 5%;
+        padding: 0 1%;
+        display: flex;
+        //flex-direction: row;
+         flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        .c-chart{
+            width: 90%;
+            display: block;
+        }
+    }
+
+}
+
+
+
+@media screen and (min-width:1200px) {
+    .wrapper-chart{
+        width: 90%;
+        padding: 0 5%;
+        display: flex;
+        flex-direction: row;
+        //flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        .c-card-meteo{
+            width: 25%;
+        }
+        .c-chart{
+            width: 70%;
+            display: block;
+        }
+       
+    }
+}
