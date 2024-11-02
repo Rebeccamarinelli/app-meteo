@@ -1,5 +1,8 @@
 <div class="w-fav">
     <h2>Città Preferite</h2>
+    <button (click)="toggleSortOrder()">
+      Ordina per temperatura ({{ isAscending ? 'Crescente' : 'Decrescente' }})
+    </button>
     <div class="c-fav">
       <div *ngFor="let city of favoriteCities" @fadeIn>
         <img [src]="getWeatherIcon(city.weatherCode)" alt="Icona Meteo">
@@ -11,6 +14,7 @@
        <p>Condizione Meteo: {{ getWeatherDescription(city.weatherCode) }}</p>
         <button (click)="removeCity(city.name)">Rimuovi</button>
       </div>
+
     </div>
   
     <p class="empty" *ngIf="favoriteCities.length === 0">Nessuna città preferita aggiunta.</p>

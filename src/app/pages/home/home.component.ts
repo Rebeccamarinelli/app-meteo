@@ -102,10 +102,8 @@ export class HomeComponent {
 
   addFavoriteCity() {
     if (this.weatherData) {
-      // Recupera le città preferite dal localStorage
       const favoriteCities = JSON.parse(localStorage.getItem(this.favService.storageKey) || '[]');
       
-      // Verifica se la città esiste già
       const cityExists = favoriteCities.some((existingCity: { name: string; }) => 
         existingCity.name.toLowerCase() === this.weatherData.name.toLowerCase()
       );
@@ -141,7 +139,7 @@ export class HomeComponent {
     this.chart = new Chart('tempChart', {
       type: 'line',
       data: {
-        labels: labels.map((label) => label.split('T')[1]), // Mostra solo l'ora
+        labels: labels.map((label) => label.split('T')[1]), 
         datasets: [
           {
             label: 'Temperatura (°C)',

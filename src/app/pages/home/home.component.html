@@ -33,10 +33,11 @@
         <button (click)="resetSearch()">Cerca ancora</button>
       </div>
 
-    <div  class="c-chart" *ngIf="weatherData" @fadeIn>
+    <div class="c-chart" *ngIf="weatherData" @fadeIn>
         <h3 *ngIf="weatherData">Andamento temperature per {{ capitalizeFirstLetter(city) }} nelle prossime 24 ore</h3>
         <canvas id="tempChart"></canvas>
     </div>
+
     
 </div>
 

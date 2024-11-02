@@ -1,11 +1,24 @@
 .w-fav{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0 10%;
+    box-sizing: border-box;
     h2{
         text-align: center;
         margin-bottom: 2em;
     }
-    width: 100%;
-    padding: 0 10%;
-    box-sizing: border-box;
+    button{
+        margin-bottom: 2em;
+        cursor: pointer;
+        background-color: #4d4d4d;
+        color: #fff;
+        border: none;
+        padding: 1em;
+        border-radius: 20px;
+    }
     .c-fav{
         display: flex;
         flex-direction: column;
@@ -57,11 +70,17 @@
 
 @media screen and (min-width:1000px) {
     .w-fav{
+        button{
+            &:hover{
+                background-color: #bcbcbc;
+                color: #111;
+            }
+        }
         .c-fav{
             flex-direction: row;
             flex-wrap: wrap;
             div{
-               width: 25%;
+               width: 30%;
                button{
                 &:hover{
                     background-color: #bcbcbc;
