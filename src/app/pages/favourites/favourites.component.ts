@@ -24,6 +24,7 @@ import { WeatherService } from '../../services/weather.service';
 export class FavouritesComponent {
   favoriteCities: any[] = [];
   error: string = '';
+  dataLoaded: boolean = false; // Flag per evitare caricamenti multipli
   
   
 
@@ -33,18 +34,24 @@ export class FavouritesComponent {
 
 
   ngOnInit(): void {
-    //this.loadFavoriteCities();
-    //this.updateFavoriteCitiesWeather();
-  this.loadFavoriteCitiesAndUpdateWeather()
+    if (!this.dataLoaded) {  // Esegui solo se i dati non sono ancora stati caricati
+      this.loadFavoriteCitiesAndUpdateWeather();
+      this.dataLoaded = true; // Imposta la flag a true dopo il primo caricamento
+    }
   }
 
+  ngOnDestroy(): void {
+    // Resetta la variabile per forzare l'aggiornamento alla prossima apertura
+    this.dataLoaded = false;
+  }
+ 
    loadFavoriteCitiesAndUpdateWeather() {
      // Carica le città preferite dalla memoria locale
      const storedCities = this.favService.getFavoriteCities();
      const updatedCities: any[] = [];
   
    // Per ciascuna città preferita, richiedi i dati meteo aggiornati
-    storedCities.forEach((cityData: any, index: number) => {
+    storedCities.forEach((cityData: any) => {
       this.weatherService.getWeather(cityData.latitude, cityData.longitude).subscribe(
         (updatedWeatherData) => {
           console.log(updatedWeatherData)
@@ -83,7 +90,8 @@ export class FavouritesComponent {
       this.favService.removeFavoriteCity(cityName);
     
       // Aggiorna la lista di città preferite dopo la rimozione
-      this.favoriteCities = this.favoriteCities.filter(city => city.name.toLowerCase() !== cityName.toLowerCase());
+      this.favoriteCities = [...this.favoriteCities.filter(city => city.name.toLowerCase() !== cityName.toLowerCase())];
+      //this.favoriteCities = this.favoriteCities.filter(city => city.name !== cityName);
     
       // Salva la lista aggiornata nel local storage
       localStorage.setItem(this.favService.storageKey, JSON.stringify(this.favoriteCities));
