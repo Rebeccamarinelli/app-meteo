@@ -60,7 +60,7 @@ export class HomeComponent {
 
   getWeather(){
     this.weatherService.getCoordinates(this.city).subscribe((res)=>{
-      console.log(res)
+    
       if(res.results && res.results.length > 0){
         const latitude = res.results[0].latitude;
         const longitude = res.results[0].longitude;
@@ -70,7 +70,7 @@ export class HomeComponent {
           const hourlyData = res.hourly;
           const labels = hourlyData.time.slice(0, 24); 
           const temperatures = hourlyData.temperature_2m.slice(0, 24);
-
+          console.log(res.latitude)
           setTimeout(() => this.createChart(labels, temperatures), 10);
 
           this.weatherData = {
@@ -80,11 +80,11 @@ export class HomeComponent {
             windDirection: res.current_weather.winddirection,
             humidity: res.hourly.relative_humidity_2m[0],  
             weatherCode: res.hourly.weathercode[0] ,
-            description: this.getWeatherDescription(res.hourly.weathercode[0])       
+            description: this.getWeatherDescription(res.hourly.weathercode[0]),
+            longitude: res.longitude,
+            latitude: res.latitude     
           };
           
-
-          console.log(labels)
         
         }),
         (error:any) => {

@@ -23,6 +23,9 @@ import { WeatherService } from '../../services/weather.service';
 })
 export class FavouritesComponent {
   favoriteCities: any[] = [];
+  error: string = '';
+  
+  
 
   constructor(private favService: FavouritesService,
                private meteo:UtilityMeteoService,
@@ -30,43 +33,64 @@ export class FavouritesComponent {
 
 
   ngOnInit(): void {
-    this.loadFavoriteCities();
+    //this.loadFavoriteCities();
     //this.updateFavoriteCitiesWeather();
+  this.loadFavoriteCitiesAndUpdateWeather()
   }
 
-  // updateFavoriteCitiesWeather() {
-  //   const storedCities = JSON.parse(localStorage.getItem('favoriteCities') || '[]');
-  //   this.favoriteCities = [];
-
-  //   storedCities.forEach((cityData: any) => {
-  //     this.weatherService.getWeather(cityData.latitude, cityData.longitude).subscribe(updatedWeatherData => {
-  //       const updatedCityData = {
-  //         ...cityData,
-  //         temperature: updatedWeatherData.current_weather.temperature,
-  //         windSpeed: updatedWeatherData.current_weather.windspeed,
-  //         windDirection: updatedWeatherData.current_weather.winddirection,
-  //         humidity: updatedWeatherData.hourly.relative_humidity_2m[0],
-  //         weatherCode: updatedWeatherData.hourly.weathercode[0]
-  //       };
-
-  //       this.favoriteCities.push(updatedCityData);
-  //     });
-  //   });
-
-  //   // Aggiorna il localStorage con i dati meteo aggiornati
-  //   localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
-  // }
-
+   loadFavoriteCitiesAndUpdateWeather() {
+     // Carica le città preferite dalla memoria locale
+     const storedCities = this.favService.getFavoriteCities();
+     const updatedCities: any[] = [];
   
-
-  loadFavoriteCities() {
-    this.favoriteCities = this.favService.getFavoriteCitiesSortedByTemperature();
-  }
-
-   removeCity(city: string) {
-     this.favService.removeFavoriteCity(city);
-     this.loadFavoriteCities();
+   // Per ciascuna città preferita, richiedi i dati meteo aggiornati
+    storedCities.forEach((cityData: any, index: number) => {
+      this.weatherService.getWeather(cityData.latitude, cityData.longitude).subscribe(
+        (updatedWeatherData) => {
+          console.log(updatedWeatherData)
+          const updatedCityData = {
+            ...cityData,
+            temperature: updatedWeatherData.current_weather.temperature,
+            windSpeed: updatedWeatherData.current_weather.windspeed,
+            windDirection: updatedWeatherData.current_weather.winddirection,
+            humidity: updatedWeatherData.hourly.relative_humidity_2m[0],
+            weatherCode: updatedWeatherData.hourly.weathercode[0]
+          };
+  
+          updatedCities.push(updatedCityData);
+  
+           // Quando tutte le città sono state aggiornate, aggiorna `favoriteCities` e `localStorage`
+          if (updatedCities.length === storedCities.length) {
+            this.favoriteCities = updatedCities;
+  
+            // Aggiorna il `localStorage` con i dati meteo aggiornati
+             localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
+           }
+         },
+         (error) => {
+           this.error = 'Errore durante l\'aggiornamento dei dati meteo delle città preferite.';
+         }
+       );
+     });
    }
+
+    // loadFavoriteCities() {
+    //   this.favoriteCities = this.favService.getFavoriteCitiesSortedByTemperature();
+    // }
+
+    removeCity(cityName: string) {
+      // Rimuovi la città dal servizio preferiti
+      this.favService.removeFavoriteCity(cityName);
+    
+      // Aggiorna la lista di città preferite dopo la rimozione
+      this.favoriteCities = this.favoriteCities.filter(city => city.name.toLowerCase() !== cityName.toLowerCase());
+    
+      // Salva la lista aggiornata nel local storage
+      localStorage.setItem(this.favService.storageKey, JSON.stringify(this.favoriteCities));
+    
+      // Ricarica le città per assicurare che la lista si aggiorni
+      this.loadFavoriteCitiesAndUpdateWeather();
+    }
 
    
    getWeatherIcon(code: number): string {

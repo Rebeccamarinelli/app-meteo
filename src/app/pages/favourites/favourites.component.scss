@@ -20,6 +20,7 @@
         border-radius: 20px;
     }
     .c-fav{
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -61,7 +62,7 @@
     .w-fav{
         .c-fav{
             div{
-               width: 50%;
+               width: 60%;
             }
         }
     }
@@ -80,7 +81,7 @@
             flex-direction: row;
             flex-wrap: wrap;
             div{
-               width: 30%;
+               width: 45%;
                button{
                 &:hover{
                     background-color: #bcbcbc;
