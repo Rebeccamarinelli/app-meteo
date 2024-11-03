@@ -18,7 +18,7 @@ export class UtilityMeteoService {
     return weatherDescriptions[code] || 'Condizione meteo sconosciuta';
   }
 
-  // Restituisce l'icona meteo in base al codice
+
   getWeatherIcon(code: number): string {
     const weatherIcons: { [key: number]: string } = {
       0: 'https://img.icons8.com/color/100/sun--v1.png',
@@ -30,7 +30,7 @@ export class UtilityMeteoService {
     return weatherIcons[code] || 'https://img.icons8.com/color/100/rainbow--v1.png';
   }
 
-  // Capitalizza la prima lettera di una stringa
+  
   capitalizeFirstLetter(text: string): string { 
     if (!text) return '';
     return text.charAt(0).toUpperCase() + text.slice(1);

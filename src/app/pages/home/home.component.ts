@@ -36,6 +36,7 @@ export class HomeComponent {
   weatherData: any = null;
   error: string = '';
   chart: any;
+  h2Text = 'Weather App';
   @ViewChild('popup') popup!: PopUpComponent;
 
 
@@ -58,125 +59,124 @@ export class HomeComponent {
       return this.meteo.capitalizeFirstLetter(text);
     }
 
-  getWeather(){
-    this.weatherService.getCoordinates(this.city).subscribe((res)=>{
-    
-      if(res.results && res.results.length > 0){
-        const latitude = res.results[0].latitude;
-        const longitude = res.results[0].longitude;
-        this.weatherService.getWeather(latitude, longitude).subscribe((res)=>{
-          this.weatherData = res.current_weather;
-          this.error = '';
-          const hourlyData = res.hourly;
-          const labels = hourlyData.time.slice(0, 24); 
-          const temperatures = hourlyData.temperature_2m.slice(0, 24);
-         
-          setTimeout(() => this.createChart(labels, temperatures), 10);
+    getWeather(){
+      this.weatherService.getCoordinates(this.city).subscribe((res)=>{
+      
+        if(res.results && res.results.length > 0){
+          const latitude = res.results[0].latitude;
+          const longitude = res.results[0].longitude;
+          this.weatherService.getWeather(latitude, longitude).subscribe((res)=>{
+            this.weatherData = res.current_weather;
+            this.error = '';
+            const hourlyData = res.hourly;
+            const labels = hourlyData.time.slice(0, 24); 
+            const temperatures = hourlyData.temperature_2m.slice(0, 24);
+          
+            setTimeout(() => this.createChart(labels, temperatures), 10);
 
-          this.weatherData = {
-            name: this.city, 
-            temperature: res.current_weather.temperature,
-            windSpeed: res.current_weather.windspeed,
-            windDirection: res.current_weather.winddirection,
-            humidity: res.hourly.relative_humidity_2m[0],  
-            weatherCode: res.hourly.weathercode[0] ,
-            description: this.getWeatherDescription(res.hourly.weathercode[0]),
-            longitude: res.longitude,
-            latitude: res.latitude     
-          };
-          console.log(this.weatherData, 'ciao')  
-        
-        }),
-        (error:any) => {
-          this.error = 'Errore durante il recupero dei dati meteo';
+            this.weatherData = {
+              name: this.city, 
+              temperature: res.current_weather.temperature,
+              windSpeed: res.current_weather.windspeed,
+              windDirection: res.current_weather.winddirection,
+              humidity: res.hourly.relative_humidity_2m[0],  
+              weatherCode: res.hourly.weathercode[0] ,
+              description: this.getWeatherDescription(res.hourly.weathercode[0]),
+              longitude: res.longitude,
+              latitude: res.latitude     
+            };
+          
+          }),
+          (error:any) => {
+            this.error = 'Errore durante il recupero dei dati meteo';
+          }
+        }else {
+          this.error = 'Città non trovata';
         }
-      }else {
-        this.error = 'Città non trovata';
+      }),
+      (error:any) => {
+        this.error = 'Errore durante il recupero delle coordinate';
       }
-    }),
-    (error:any) => {
-      this.error = 'Errore durante il recupero delle coordinate';
     }
-  }
 
 
-  addFavoriteCity() {
-    if (this.weatherData) {
-      const favoriteCities = JSON.parse(localStorage.getItem(this.favService.storageKey) || '[]');
-      
-      const cityExists = favoriteCities.some((existingCity: { name: string; }) => 
-        existingCity.name.toLowerCase() === this.weatherData.name.toLowerCase()
-      );
-  
-      if (!cityExists) {
-        this.favService.addFavoriteCity(this.weatherData);
-        this.popup.open(`${this.capitalizeFirstLetter(this.weatherData.name)} è stata aggiunta alle città preferite!`);
+    addFavoriteCity() {
+      if (this.weatherData) {
+        const favoriteCities = JSON.parse(localStorage.getItem(this.favService.storageKey) || '[]');
+        
+        const cityExists = favoriteCities.some((existingCity: { name: string; }) => 
+          existingCity.name.toLowerCase() === this.weatherData.name.toLowerCase()
+        );
+    
+        if (!cityExists) {
+          this.favService.addFavoriteCity(this.weatherData);
+          this.popup.open(`${this.capitalizeFirstLetter(this.weatherData.name)} è stata aggiunta alle città preferite!`);
+        } else {
+          this.popup.open(`${this.capitalizeFirstLetter(this.weatherData.name)} è già nelle città preferite.`);
+        }
+        
+        console.log(this.weatherData);
       } else {
-        this.popup.open(`${this.capitalizeFirstLetter(this.weatherData.name)} è già nelle città preferite.`);
+        this.popup.open('Inserisci una città valida.');
       }
-      
-      console.log(this.weatherData);
-    } else {
-      this.popup.open('Inserisci una città valida.');
-    }
-  }
-
-  resetSearch() {
-    this.weatherData = null;  
-    this.city = '';          
-    this.error = ''; 
-    if (this.chart) {
-      this.chart.destroy();
-    }     
-  }
-
-
-  createChart(labels: string[], data: number[]) {
-    if (this.chart) {
-      this.chart.destroy(); 
     }
 
-    this.chart = new Chart('tempChart', {
-      type: 'line',
-      data: {
-        labels: labels.map((label) => label.split('T')[1]), 
-        datasets: [
-          {
-            label: 'Temperatura (°C)',
-            data: data,
-            fill: true,
-            borderColor: '#eea653',
-            tension: 0.1,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Ora',
+    resetSearch() {
+      this.weatherData = null;  
+      this.city = '';          
+      this.error = ''; 
+      if (this.chart) {
+        this.chart.destroy();
+      }     
+    }
+
+
+    createChart(labels: string[], data: number[]) {
+      if (this.chart) {
+        this.chart.destroy(); 
+      }
+
+      this.chart = new Chart('tempChart', {
+        type: 'line',
+        data: {
+          labels: labels.map((label) => label.split('T')[1]), 
+          datasets: [
+            {
+              label: 'Temperatura (°C)',
+              data: data,
+              fill: true,
+              borderColor: '#eea653',
+              tension: 0.1,
             },
-          },
-          y: {
-            title: {
-              display: true,
-              text: 'Temperatura (°C)',
+          ],
+        },
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Ora',
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Temperatura (°C)',
+              },
             },
           },
         },
-      },
-    });
-  }
+      });
+    }
 
-  h2Text = 'Weather App';
+  
 
-  onInputFocus() {
-    this.h2Text = "Search for your favourite city";
-  }
+    onInputFocus() {
+      this.h2Text = "Search for your favourite city";
+    }
 
-  onInputBlur() {
-    this.h2Text = 'Weather App';
-  }
+    onInputBlur() {
+      this.h2Text = 'Weather App';
+    }
 
 }

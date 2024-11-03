@@ -14,7 +14,7 @@ export class PopUpComponent {
   @Input() message: string = '';
   isVisible: boolean = false;
 
-  open(message: string) {
+  open(message: string):void {
     this.message = message;
     this.isVisible = true;
     document.body.style.overflow = 'hidden';

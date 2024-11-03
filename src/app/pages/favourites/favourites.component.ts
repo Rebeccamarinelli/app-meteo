@@ -23,8 +23,10 @@ import { lastValueFrom } from 'rxjs';
   ]
 })
 export class FavouritesComponent {
+
   favoriteCities: any[] = [];
   error: string = '';
+  isAscending: boolean = true;
   
   
 
@@ -33,22 +35,22 @@ export class FavouritesComponent {
               private weatherService: WeatherService) {}
 
 
-  ngOnInit(): void {
+ngOnInit(): void {
   this.loadFavoriteCitiesAndUpdateWeather()
-  console.log('ciao')
-  }
+
+}
 
 
 
-loadFavoriteCitiesAndUpdateWeather() {
-  // Carica le città preferite dalla memoria locale
+loadFavoriteCitiesAndUpdateWeather():void {
+ 
   const storedCities = this.favService.getFavoriteCities();
 
-  // Crea un array di Promesse per aggiornare ciascuna città
+  
   const updatePromises = storedCities.map((cityData: any) =>
     lastValueFrom(this.weatherService.getWeather(cityData.latitude, cityData.longitude))
       .then((updatedWeatherData) => {
-        // Aggiorna i dati della città con le informazioni meteo
+        
         return {
           ...cityData,
           temperature: updatedWeatherData.current_weather.temperature,
@@ -62,14 +64,12 @@ loadFavoriteCitiesAndUpdateWeather() {
       })
   );
 
-  // Usa Promise.all per attendere che tutte le chiamate siano completate
+  
   Promise.all(updatePromises)
     .then((updatedCities) => {
-      // Assegna i dati aggiornati a favoriteCities
       this.favoriteCities = updatedCities;
       console.log('Updated Cities:', updatedCities);
 
-      // Aggiorna il `localStorage` con i dati meteo aggiornati
       localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
     })
     .catch(error => {
@@ -80,40 +80,37 @@ loadFavoriteCitiesAndUpdateWeather() {
 
 
 
-    removeCity(cityName: string) {
-      // Rimuovi la città dal servizio preferiti
-      this.favService.removeFavoriteCity(cityName);
-    
-      // Aggiorna la lista di città preferite dopo la rimozione
-      this.favoriteCities = this.favoriteCities.filter(city => city.name.toLowerCase() !== cityName.toLowerCase());
-    
-      // Salva la lista aggiornata nel local storage
-      localStorage.setItem(this.favService.storageKey, JSON.stringify(this.favoriteCities));
-    
-      // Ricarica le città per assicurare che la lista si aggiorni
-      this.loadFavoriteCitiesAndUpdateWeather();
-    }
+removeCity(cityName: string) {
+  
+  this.favService.removeFavoriteCity(cityName);
+
+  this.favoriteCities = this.favoriteCities.filter(city => city.name.toLowerCase() !== cityName.toLowerCase());
+  
+  localStorage.setItem(this.favService.storageKey, JSON.stringify(this.favoriteCities));
+
+  this.loadFavoriteCitiesAndUpdateWeather();
+}
 
    
-   getWeatherIcon(code: number): string {
-     return this.meteo.getWeatherIcon(code);
-   }
- 
-   getWeatherDescription(code: number): string {
-     return this.meteo.getWeatherDescription(code);
-   }
- 
-   capitalizeFirstLetter(text: string): string {
-     return this.meteo.capitalizeFirstLetter(text);
-   }
+getWeatherIcon(code: number): string {
+  return this.meteo.getWeatherIcon(code);
+}
 
-   isAscending: boolean = true;
+getWeatherDescription(code: number): string {
+  return this.meteo.getWeatherDescription(code);
+}
 
-    toggleSortOrder(): void {
-      this.isAscending = !this.isAscending;
-      this.favoriteCities.sort((a, b) =>
-      this.isAscending ? a.temperature - b.temperature : b.temperature - a.temperature
-    );
+capitalizeFirstLetter(text: string): string {
+  return this.meteo.capitalizeFirstLetter(text);
+}
+
+
+
+toggleSortOrder(): void {
+    this.isAscending = !this.isAscending;
+    this.favoriteCities.sort((a, b) =>
+    this.isAscending ? a.temperature - b.temperature : b.temperature - a.temperature
+  );
 }
 
 }

@@ -30,22 +30,14 @@ export class FavouritesService {
     }
   }
 
-  removeFavoriteCity(cityName: string) {
+  removeFavoriteCity(cityName: string) :void {
     const favoriteCities = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
     
-    // Filtra la città da rimuovere
     const updatedCities = favoriteCities.filter((city: any) => city.name.toLowerCase() !== cityName.toLowerCase());
   
-    // Aggiorna il local storage con la nuova lista
     localStorage.setItem(this.storageKey, JSON.stringify(updatedCities));
   }
-
-  getFavoriteCitiesSortedByTemperature(): any[] {
-    const cities = this.getFavoriteCities(); // Recupera tutte le città preferite
-    return cities.sort((a: any, b: any) => a.temperature - b.temperature); // Ordina per temperatura (crescente)
-  }
-
-  
+ 
 
 
 }
