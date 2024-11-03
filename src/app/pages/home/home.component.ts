@@ -59,7 +59,7 @@ export class HomeComponent {
       return this.meteo.capitalizeFirstLetter(text);
     }
 
-    getWeather(){
+    getWeather():void{
       this.weatherService.getCoordinates(this.city).subscribe((res)=>{
     
         if(res.results && res.results.length > 0){
@@ -99,28 +99,7 @@ export class HomeComponent {
       }
     }
 
-    // addFavoriteCity() {
-    //   if (this.weatherData) {
-    //     const favoriteCities = JSON.parse(localStorage.getItem(this.favService.storageKey) || '[]');
-        
-    //     const cityExists = favoriteCities.some((existingCity: { name: string; }) => 
-    //       existingCity.name.toLowerCase() === this.weatherData.name.toLowerCase()
-    //     );
-    
-    //     if (!cityExists) {
-    //       this.favService.addFavoriteCity(this.weatherData);
-    //       this.popup.open(`${this.capitalizeFirstLetter(this.weatherData.name)} è stata aggiunta alle città preferite!`);
-    //     } else {
-    //       this.popup.open(`${this.capitalizeFirstLetter(this.weatherData.name)} è già nelle città preferite.`);
-    //     }
-        
-    //     console.log(this.weatherData);
-    //   } else {
-    //     this.popup.open('Inserisci una città valida.');
-    //   }
-    // }
-
-    addFavoriteCity() {
+    addFavoriteCity() :void {
       if (this.weatherData) {
         const favoriteCities = JSON.parse(localStorage.getItem(this.favService.storageKey) || '[]');
         
@@ -141,8 +120,7 @@ export class HomeComponent {
       }
     }
     
-
-    resetSearch() {
+    resetSearch() :void{
       this.weatherData = null;  
       this.city = '';          
       this.error = ''; 
@@ -151,8 +129,7 @@ export class HomeComponent {
       }     
     }
 
-
-    createChart(labels: string[], data: number[]) {
+    createChart(labels: string[], data: number[]):void {
       if (this.chart) {
         this.chart.destroy(); 
       }
@@ -190,13 +167,11 @@ export class HomeComponent {
       });
     }
 
-  
-
-    onInputFocus() {
+    onInputFocus() :void{
       this.h2Text = "Search for your favourite city";
     }
 
-    onInputBlur() {
+    onInputBlur() :void{
       this.h2Text = 'Weather App';
     }
 
