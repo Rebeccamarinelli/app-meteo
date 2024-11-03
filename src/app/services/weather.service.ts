@@ -11,22 +11,22 @@ export class WeatherService {
 
   constructor(private http:HttpClient) {}
 
-    getCoordinates(city:string):Observable<any>{
-      const geocodingUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`;
-      return this.http.get(geocodingUrl);
-    } 
+  getCoordinates(city:string):Observable<any>{
+    const geocodingUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`;
+    return this.http.get(geocodingUrl);
+  } 
 
      
-    getWeather(latitude: number, longitude: number): Observable<any> {
-      return this.http.get(this.apiUrl, {
-        params: {
-          latitude: latitude.toString(),
-          longitude: longitude.toString(),
-          current_weather: 'true',
-          hourly: 'temperature_2m,relative_humidity_2m,weathercode',
-          timezone: 'Europe/Rome'
-        }
-      });
+  getWeather(latitude: number, longitude: number): Observable<any> {
+    return this.http.get(this.apiUrl, {
+      params: {
+        latitude: latitude.toString(),
+        longitude: longitude.toString(),
+        current_weather: 'true',
+        hourly: 'temperature_2m,relative_humidity_2m,weathercode',
+        timezone: 'Europe/Rome'
+      }
+    });
   }
 
 }
