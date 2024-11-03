@@ -127,7 +127,7 @@ async ngOnInit() {
   this.favoriteCities = this.favService.getFavoriteCities();
 
   // Esegui l'aggiornamento immediatamente
-  //await this.updateWeatherData();
+  await this.updateWeatherData();
 
   // Imposta l'aggiornamento ogni 10 minuti (600000 ms)
   this.updateInterval = setInterval(() => {

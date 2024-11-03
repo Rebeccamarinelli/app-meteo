@@ -60,7 +60,7 @@ async loadFavoriteCitiesAndUpdateWeather() {
 
       const updatedCityData = {
         ...cityData,
-        temperature: parseFloat(updatedWeatherData.current_weather.temperature.toFixed(1)),
+        temperature: parseFloat(updatedWeatherData.current_weather.temperature.toFixed(0)),
         windSpeed: parseFloat(updatedWeatherData.current_weather.windspeed.toFixed(1)),
         windDirection: updatedWeatherData.current_weather.winddirection,
         humidity: updatedWeatherData.hourly.relative_humidity_2m[0],

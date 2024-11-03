@@ -76,7 +76,7 @@ export class HomeComponent {
             console.log(this.weatherData)
             this.weatherData = {
               name: this.city, 
-              temperature: res.current_weather.temperature,
+              temperature: parseFloat(res.current_weather.temperature.toFixed(0)),
               windSpeed: res.current_weather.windspeed,
               windDirection: res.current_weather.winddirection,
               humidity: res.hourly.relative_humidity_2m[0],  
