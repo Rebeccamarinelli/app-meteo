@@ -61,7 +61,7 @@ export class HomeComponent {
 
     getWeather(){
       this.weatherService.getCoordinates(this.city).subscribe((res)=>{
-      
+    
         if(res.results && res.results.length > 0){
           const latitude = res.results[0].latitude;
           const longitude = res.results[0].longitude;
@@ -71,9 +71,9 @@ export class HomeComponent {
             const hourlyData = res.hourly;
             const labels = hourlyData.time.slice(0, 24); 
             const temperatures = hourlyData.temperature_2m.slice(0, 24);
-          
+        
             setTimeout(() => this.createChart(labels, temperatures), 10);
-
+            console.log(this.weatherData)
             this.weatherData = {
               name: this.city, 
               temperature: res.current_weather.temperature,
@@ -85,7 +85,7 @@ export class HomeComponent {
               longitude: res.longitude,
               latitude: res.latitude     
             };
-          
+            console.log(this.weatherData)
           }),
           (error:any) => {
             this.error = 'Errore durante il recupero dei dati meteo';
@@ -99,6 +99,26 @@ export class HomeComponent {
       }
     }
 
+    // addFavoriteCity() {
+    //   if (this.weatherData) {
+    //     const favoriteCities = JSON.parse(localStorage.getItem(this.favService.storageKey) || '[]');
+        
+    //     const cityExists = favoriteCities.some((existingCity: { name: string; }) => 
+    //       existingCity.name.toLowerCase() === this.weatherData.name.toLowerCase()
+    //     );
+    
+    //     if (!cityExists) {
+    //       this.favService.addFavoriteCity(this.weatherData);
+    //       this.popup.open(`${this.capitalizeFirstLetter(this.weatherData.name)} è stata aggiunta alle città preferite!`);
+    //     } else {
+    //       this.popup.open(`${this.capitalizeFirstLetter(this.weatherData.name)} è già nelle città preferite.`);
+    //     }
+        
+    //     console.log(this.weatherData);
+    //   } else {
+    //     this.popup.open('Inserisci una città valida.');
+    //   }
+    // }
 
     addFavoriteCity() {
       if (this.weatherData) {
@@ -120,6 +140,7 @@ export class HomeComponent {
         this.popup.open('Inserisci una città valida.');
       }
     }
+    
 
     resetSearch() {
       this.weatherData = null;  
