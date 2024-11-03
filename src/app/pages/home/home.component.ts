@@ -70,7 +70,7 @@ export class HomeComponent {
           const hourlyData = res.hourly;
           const labels = hourlyData.time.slice(0, 24); 
           const temperatures = hourlyData.temperature_2m.slice(0, 24);
-          console.log(res.latitude)
+         
           setTimeout(() => this.createChart(labels, temperatures), 10);
 
           this.weatherData = {
@@ -84,7 +84,7 @@ export class HomeComponent {
             longitude: res.longitude,
             latitude: res.latitude     
           };
-          
+          console.log(this.weatherData, 'ciao')  
         
         }),
         (error:any) => {

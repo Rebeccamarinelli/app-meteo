@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UtilityMeteoService } from '../../services/utility-meteo.service';
 import {trigger, transition, style, animate} from '@angular/animations'
 import { WeatherService } from '../../services/weather.service';
+import { lastValueFrom } from 'rxjs';
 
 
 @Component({
@@ -24,7 +25,6 @@ import { WeatherService } from '../../services/weather.service';
 export class FavouritesComponent {
   favoriteCities: any[] = [];
   error: string = '';
-  dataLoaded: boolean = false; // Flag per evitare caricamenti multipli
   
   
 
@@ -34,64 +34,58 @@ export class FavouritesComponent {
 
 
   ngOnInit(): void {
-    if (!this.dataLoaded) {  // Esegui solo se i dati non sono ancora stati caricati
-      this.loadFavoriteCitiesAndUpdateWeather();
-      this.dataLoaded = true; // Imposta la flag a true dopo il primo caricamento
-    }
+  this.loadFavoriteCitiesAndUpdateWeather()
+  console.log('ciao')
   }
 
-  ngOnDestroy(): void {
-    // Resetta la variabile per forzare l'aggiornamento alla prossima apertura
-    this.dataLoaded = false;
-  }
- 
-   loadFavoriteCitiesAndUpdateWeather() {
-     // Carica le città preferite dalla memoria locale
-     const storedCities = this.favService.getFavoriteCities();
-     const updatedCities: any[] = [];
-  
-   // Per ciascuna città preferita, richiedi i dati meteo aggiornati
-    storedCities.forEach((cityData: any) => {
-      this.weatherService.getWeather(cityData.latitude, cityData.longitude).subscribe(
-        (updatedWeatherData) => {
-          console.log(updatedWeatherData)
-          const updatedCityData = {
-            ...cityData,
-            temperature: updatedWeatherData.current_weather.temperature,
-            windSpeed: updatedWeatherData.current_weather.windspeed,
-            windDirection: updatedWeatherData.current_weather.winddirection,
-            humidity: updatedWeatherData.hourly.relative_humidity_2m[0],
-            weatherCode: updatedWeatherData.hourly.weathercode[0]
-          };
-  
-          updatedCities.push(updatedCityData);
-  
-           // Quando tutte le città sono state aggiornate, aggiorna `favoriteCities` e `localStorage`
-          if (updatedCities.length === storedCities.length) {
-            this.favoriteCities = updatedCities;
-  
-            // Aggiorna il `localStorage` con i dati meteo aggiornati
-             localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
-           }
-         },
-         (error) => {
-           this.error = 'Errore durante l\'aggiornamento dei dati meteo delle città preferite.';
-         }
-       );
-     });
-   }
 
-    // loadFavoriteCities() {
-    //   this.favoriteCities = this.favService.getFavoriteCitiesSortedByTemperature();
-    // }
+
+loadFavoriteCitiesAndUpdateWeather() {
+  // Carica le città preferite dalla memoria locale
+  const storedCities = this.favService.getFavoriteCities();
+
+  // Crea un array di Promesse per aggiornare ciascuna città
+  const updatePromises = storedCities.map((cityData: any) =>
+    lastValueFrom(this.weatherService.getWeather(cityData.latitude, cityData.longitude))
+      .then((updatedWeatherData) => {
+        // Aggiorna i dati della città con le informazioni meteo
+        return {
+          ...cityData,
+          temperature: updatedWeatherData.current_weather.temperature,
+          windSpeed: updatedWeatherData.current_weather.windspeed,
+          windDirection: updatedWeatherData.current_weather.winddirection,
+          humidity: updatedWeatherData.hourly.relative_humidity_2m[0],
+          weatherCode: updatedWeatherData.hourly.weathercode[0],
+          longitude: updatedWeatherData.longitude,
+          latitude: updatedWeatherData.latitude
+        };
+      })
+  );
+
+  // Usa Promise.all per attendere che tutte le chiamate siano completate
+  Promise.all(updatePromises)
+    .then((updatedCities) => {
+      // Assegna i dati aggiornati a favoriteCities
+      this.favoriteCities = updatedCities;
+      console.log('Updated Cities:', updatedCities);
+
+      // Aggiorna il `localStorage` con i dati meteo aggiornati
+      localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
+    })
+    .catch(error => {
+      this.error = 'Errore durante l\'aggiornamento dei dati meteo delle città preferite.';
+      console.error(error);
+    });
+}
+
+
 
     removeCity(cityName: string) {
       // Rimuovi la città dal servizio preferiti
       this.favService.removeFavoriteCity(cityName);
     
       // Aggiorna la lista di città preferite dopo la rimozione
-      this.favoriteCities = [...this.favoriteCities.filter(city => city.name.toLowerCase() !== cityName.toLowerCase())];
-      //this.favoriteCities = this.favoriteCities.filter(city => city.name !== cityName);
+      this.favoriteCities = this.favoriteCities.filter(city => city.name.toLowerCase() !== cityName.toLowerCase());
     
       // Salva la lista aggiornata nel local storage
       localStorage.setItem(this.favService.storageKey, JSON.stringify(this.favoriteCities));
