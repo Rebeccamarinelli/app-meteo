@@ -74,6 +74,7 @@ loadFavoriteCitiesAndUpdateWeather():void {
     });
 }
 
+
 removeCity(cityName: string):void {
   
   this.favService.removeFavoriteCity(cityName);
